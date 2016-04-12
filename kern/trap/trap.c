@@ -49,8 +49,7 @@ idt_init(void) {
 	extern uintptr_t __vectors[];
 	int i;
 	for( i=0;i<256;i++){
-		memset(idt[i],0,sizeof(struct  gatedesc));
-		SETGATE(idt[i],0,SEG_KTEXT,__vectors[i],0);       //用法：SETGATE(gate, istrap, sel, off, dpl)
+		SETGATE(idt[i],0,KERNEL_CS,__vectors[i],0);       //用法：SETGATE(gate, istrap, sel, off, dpl)
 	}
 	lidt(&idt_pd);
 
@@ -158,7 +157,7 @@ trap_dispatch(struct trapframe *tf) {
     tick_count++;
     if(tick_count==TICK_NUM){
     	print_ticks();
-    	tick_count++;
+    	tick_count=0;
     }
         break;
     case IRQ_OFFSET + IRQ_COM1:
