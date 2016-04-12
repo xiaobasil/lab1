@@ -47,7 +47,8 @@ idt_init(void) {
       *     Notice: the argument of lidt is idt_pd. try to find it!
       */
 	extern uintptr_t __vectors[];
-	for(int i=0;i<256;i++){
+	int i;
+	for( i=0;i<256;i++){
 		memset(idt[i],0,sizeof(struct  gatedesc));
 		SETGATE(idt[i],0,SEG_KTEXT,__vectors[i],0);       //用法：SETGATE(gate, istrap, sel, off, dpl)
 	}
